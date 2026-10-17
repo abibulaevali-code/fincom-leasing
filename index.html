@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fincom Авто Лизинг: личный кабинет</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E8ECF1;--surface:#FFFFFF;--ink:#101B2D;--muted:#586578;--line:#D2D9E3;
+  --primary:#101B2D;--on-primary:#FFFFFF;--accent:#FFB400;
+  --ok:#136B49;--ok-bg:#DDF3E9;--bad:#A52A27;--bad-bg:#F9E0DF;--warn:#6B4A00;--warn-bg:#FFF0C2;--mute-bg:#E3E8EF;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D141F;--surface:#162131;--ink:#EAF0F7;--muted:#9AA8BC;--line:#2A3A52;
+    --primary:#FFB400;--on-primary:#101B2D;--accent:#FFB400;
+    --ok:#6FDDB0;--ok-bg:#12382B;--bad:#FF9C98;--bad-bg:#4A1F1E;--warn:#FFD670;--warn-bg:#3F3110;--mute-bg:#223148;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D141F;--surface:#162131;--ink:#EAF0F7;--muted:#9AA8BC;--line:#2A3A52;
+  --primary:#FFB400;--on-primary:#101B2D;--accent:#FFB400;
+  --ok:#6FDDB0;--ok-bg:#12382B;--bad:#FF9C98;--bad-bg:#4A1F1E;--warn:#FFD670;--warn-bg:#3F3110;--mute-bg:#223148;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Onest',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.45;padding-bottom:88px;-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:16px}
+h1,h2,h3{margin:0;font-weight:600;line-height:1.15}
+h2{font-size:22px;letter-spacing:-.01em}
+h3{font-size:17px}
+p{margin:0}
+.muted{color:var(--muted)}
+.disp{font-family:'Unbounded','Onest',system-ui,sans-serif;font-weight:600;letter-spacing:-.02em}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600}
+.brand .disp{font-size:15px}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--accent);display:grid;place-items:center}
+.logo svg{width:22px}
+.link{background:none;border:0;color:var(--muted);font:inherit;font-size:14px;text-decoration:underline;cursor:pointer;padding:8px}
+
+/* buttons & fields */
+.btn{font:inherit;font-weight:600;border:0;border-radius:12px;padding:13px 18px;min-height:48px;cursor:pointer;width:100%;display:block;text-align:center}
+.btn.primary{background:var(--primary);color:var(--on-primary)}
+.btn.accent{background:var(--accent);color:#101B2D}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.sm{width:auto;min-height:40px;padding:8px 14px;font-size:14px;display:inline-block}
+.btn:active{transform:translateY(1px)}
+.field{display:grid;gap:6px;margin-bottom:14px;font-size:14px;color:var(--muted)}
+.field input,.field select,.field textarea{font:inherit;font-size:16px;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);min-height:48px;width:100%}
+.stack{display:grid;gap:10px}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+.hint{font-size:13px;color:var(--muted)}
+
+/* panels */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.section{margin-top:22px}
+.section>h3{margin-bottom:10px}
+.sep{border:0;border-top:1px solid var(--line);margin:16px 0}
+
+/* login */
+.hero{font-family:'Unbounded','Onest',sans-serif;font-weight:600;font-size:clamp(28px,7vw,40px);line-height:1.08;letter-spacing:-.025em;margin:18px 0 12px}
+.lead{color:var(--muted);max-width:46ch;margin-bottom:8px}
+.road-demo{position:relative;height:70px;margin:8px 0 20px;overflow:hidden}
+.road-demo::after{content:"";position:absolute;left:0;right:0;bottom:12px;height:3px;background:repeating-linear-gradient(90deg,var(--ink) 0 14px,transparent 14px 28px);opacity:.3}
+.road-demo .drive{position:absolute;bottom:15px;left:-120px;animation:drive 10s linear infinite}
+@keyframes drive{to{left:100%}}
+@media (prefers-reduced-motion: reduce){.road-demo .drive{animation:none;left:calc(50% - 50px)}}
+
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+.nav-in{display:flex;width:100%;max-width:720px}
+.nav button{flex:1;background:none;border:0;font:inherit;font-size:12px;color:var(--muted);display:grid;justify-items:center;gap:2px;padding:6px 2px;min-height:52px;cursor:pointer;border-radius:10px}
+.nav button svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav button[aria-current="page"]{color:var(--ink);font-weight:600}
+.nav button[aria-current="page"] svg{stroke:var(--ink)}
+.nav button[aria-current="page"] .pill{background:var(--accent)}
+.pill{padding:3px 16px;border-radius:12px;display:grid;place-items:center}
+
+/* chips */
+.chip{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--mute-bg);color:var(--ink)}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}
+.chip.warn{background:var(--warn-bg);color:var(--warn)}
+.chip.bad{background:var(--bad-bg);color:var(--bad)}
+
+/* big numbers */
+.big{font-family:'Unbounded','Onest',sans-serif;font-weight:600;font-size:clamp(26px,7.4vw,38px);letter-spacing:-.03em;line-height:1.1}
+.big small{font-family:'Onest',sans-serif;font-size:15px;font-weight:500;color:var(--muted);letter-spacing:0}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin:16px 0 0}
+.kv div{min-width:0}
+.kv dt{font-size:13px;color:var(--muted)}
+.kv dd{margin:2px 0 0;font-weight:600}
+
+/* car picker */
+.cars{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 10px;margin:0 -2px;scroll-snap-type:x proximity}
+.carbtn{flex:0 0 150px;scroll-snap-align:start;text-align:left;font:inherit;background:var(--surface);color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:10px;cursor:pointer}
+.carbtn[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.carbtn b{display:block;font-size:14px;margin-top:4px}
+.carbtn span{font-size:12px;color:var(--muted)}
+
+/* sliders as road */
+.slider{margin:14px 0 6px}
+.slider .lab{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:var(--muted)}
+.slider .lab b{color:var(--ink);font-size:17px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:34px;background:transparent;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--muted) 0 10px,transparent 10px 18px)}
+input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--muted) 0 10px,transparent 10px 18px)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--accent);border:3px solid var(--ink);margin-top:-12px}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent);border:3px solid var(--ink)}
+
+/* tables */
+.tbl-wrap{overflow-x:auto;margin:0 -4px}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:420px}
+th{text-align:left;font-weight:500;color:var(--muted);padding:8px 6px;border-bottom:1px solid var(--line);font-size:13px}
+td{padding:10px 6px;border-bottom:1px solid var(--line);white-space:nowrap}
+td.r,th.r{text-align:right}
+tr.next td{font-weight:600;background:var(--warn-bg)}
+
+/* progress road */
+.prog{position:relative;height:40px;margin:14px 0 4px}
+.prog::before{content:"";position:absolute;left:0;right:0;top:26px;height:4px;background:repeating-linear-gradient(90deg,var(--muted) 0 10px,transparent 10px 18px);opacity:.6}
+.prog .fill{position:absolute;left:0;top:26px;height:4px;background:var(--ink);border-radius:2px}
+.prog .mk{position:absolute;top:0;transform:translateX(-50%)}
+
+/* status road (vertical) */
+.steps{list-style:none;margin:0;padding:0}
+.steps li{position:relative;padding:0 0 22px 46px;min-height:44px}
+.steps li::before{content:"";position:absolute;left:13px;top:30px;bottom:0;border-left:3px dashed var(--line)}
+.steps li:last-child{padding-bottom:0}
+.steps li:last-child::before{display:none}
+.steps li.done::before{border-left:3px solid var(--ink)}
+.steps .dot{position:absolute;left:0;top:0;width:29px;height:29px;border-radius:50%;border:3px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--on-primary)}
+.steps li.done .dot{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.steps li.now .dot{background:var(--accent);border-color:var(--ink)}
+.steps b{display:block}
+.steps li:not(.done):not(.now) b{color:var(--muted);font-weight:500}
+.steps .sub{font-size:14px;color:var(--muted)}
+.steps li.off .dot{border-color:var(--bad);background:var(--bad-bg)}
+
+/* banners */
+.note{border-radius:12px;padding:12px 14px;font-size:14px;margin-bottom:14px}
+.note.ok{background:var(--ok-bg);color:var(--ok)}
+.note.warn{background:var(--warn-bg);color:var(--warn)}
+.note.bad{background:var(--bad-bg);color:var(--bad)}
+.note b{display:block;font-size:15px}
+
+/* file upload */
+.file{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1.5px dashed var(--muted);border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer;position:relative}
+.file:focus-within{outline:3px solid var(--accent);outline-offset:2px}
+.file input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer}
+.file.has{border-style:solid;border-color:var(--ok)}
+.file .t{font-weight:600;font-size:15px}
+.file .s{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;max-width:55vw;white-space:nowrap}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:14px 0}
+.check input{width:22px;height:22px;margin:0;flex:none}
+
+/* manager */
+.stat{display:flex;gap:10px;margin-bottom:14px}
+.stat div{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat b{font-family:'Unbounded','Onest',sans-serif;font-size:22px;display:block}
+.stat span{font-size:13px;color:var(--muted)}
+.app{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+.app .hd{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.app .meta{font-size:14px;color:var(--muted);margin:6px 0 10px}
+.app .acts{display:flex;gap:8px;flex-wrap:wrap}
+.own-tag{font-size:12px;color:var(--muted)}
+
+.brands{display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;padding:2px}
+.brands button{font:inherit;font-size:14px;padding:8px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;white-space:nowrap;min-height:40px}
+.brands button[aria-pressed="true"]{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.sos{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;background:var(--accent);color:#101B2D;border:0;border-radius:16px;padding:16px;cursor:pointer;min-height:68px}
+.sos svg{width:34px;height:34px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sos b{display:block;font-size:17px}
+.sos div div{font-size:14px}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.svcbtn{font:inherit;text-align:left;background:var(--surface);color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;min-height:88px}
+.svcbtn b{display:block;font-size:15px;margin-bottom:3px}
+.svcbtn span{font-size:13px;color:var(--muted)}
+.field textarea{resize:vertical}
+/* car mini */
+.cr{display:flex;align-items:center;gap:12px}
+.cr .nm{font-weight:600}
+
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:12px;font-size:14px;max-width:90vw;opacity:0;pointer-events:none;transition:opacity .2s;z-index:10;text-align:center}
+#toast.show{opacity:1}
+@media (min-width:720px){.kv{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ---------- данные ---------- */
+const BRANDS=['Все','Kia','Haval','Chery'];
+const CARS=[
+  {id:'sonet',brand:'Kia',name:'Kia Sonet',trim:'Luxe, 2025',price:245000000,color:'#C4122F'},
+  {id:'sportage',brand:'Kia',name:'Kia Sportage',trim:'Prestige, 2025',price:420000000,color:'#4A5568'},
+  {id:'k5',brand:'Kia',name:'Kia K5',trim:'Prestige, 2025',price:430000000,color:'#8E1B2C'},
+  {id:'jolion',brand:'Haval',name:'Haval Jolion',trim:'Comfort, 2025',price:295000000,color:'#2E6F4E'},
+  {id:'h6',brand:'Haval',name:'Haval H6',trim:'Premium, 2025',price:385000000,color:'#1F4FA3'},
+  {id:'tiggo7',brand:'Chery',name:'Chery Tiggo 7 Pro',trim:'Comfort, 2025',price:315000000,color:'#D17A1F'},
+  {id:'tiggo8',brand:'Chery',name:'Chery Tiggo 8 Pro',trim:'Luxury, 2025',price:420000000,color:'#6B4FB3'},
+  {id:'arrizo8',brand:'Chery',name:'Chery Arrizo 8',trim:'Premium, 2025',price:335000000,color:'#0E8F7A'}
+];
+const car=id=>CARS.find(c=>c.id===id);
+const STEPS=['Заявка принята','Скоринг','Решение','Подписание договора','Выдача автомобиля'];
+const HINTS=['Получили заявку и документы','Проверяем платёжеспособность','Комитет принимает решение','Подпишите договор электронной подписью','Заберите автомобиль в салоне'];
+const JOBS=['Работаю по найму','Индивидуальный предприниматель','Самозанятый','Пенсионер'];
+
+const nf=new Intl.NumberFormat('ru-RU');
+const money=n=>nf.format(Math.round(n)).replace(/[\u00a0\u202f]/g,' ')+' сум';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fdate=(d,long)=>d.toLocaleDateString('ru-RU',long?{day:'numeric',month:'long'}:{day:'2-digit',month:'2-digit',year:'numeric'});
+
+const rateFor=d=>Math.max(18,24-(d-10)*0.12);
+function calc(price,downPct,term){
+  const down=price*downPct/100,P=price-down,rate=rateFor(downPct),r=rate/1200;
+  const pmt=r?P*r/(1-Math.pow(1+r,-term)):P/term;
+  let bal=P;const rows=[];
+  for(let i=1;i<=term;i++){const int=bal*r;const pr=pmt-int;bal=Math.max(0,bal-pr);rows.push({i,int,pr,pmt,bal});}
+  return{down,P,rate,pmt,total:pmt*term,over:pmt*term-P,rows};
+}
+const monthly=a=>calc(car(a.car).price,a.down,a.term).pmt;
+const ratio=a=>monthly(a)/a.income;
+const pct1=n=>n.toFixed(1).replace('.',',');
+
+/* ---------- хранение ---------- */
+const KEY='avto-lizing-demo-v2';
+function load(){try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):null}catch(e){return null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({apps:S.apps,contracts:S.contracts,services:S.services,seq:S.seq}))}catch(e){}}
+function seed(){
+  const n=new Date(),iso=(d)=>d.toISOString();
+  return{seq:1044,
+    services:[{id:'S-2001',type:'tint',car:'sonet',contractId:'',client:'Азиз Рахимов',phone:'+998 93 555 10 20',date:new Date(n.getTime()+5*86400e3).toISOString().slice(0,10),comment:'Задние стёкла и полоса на лобовом',drive:'Да',status:1,declined:false,own:false,created:iso(new Date(n-7200e3))}],
+    apps:[
+      {id:'A-1043',client:'Азиз Рахимов',phone:'+998 93 555 10 20',car:'sonet',down:20,term:36,income:5200000,status:0,decision:'pending',own:false,created:iso(new Date(n-3600e3))},
+      {id:'A-1042',client:'Дильноза Юсупова',phone:'+998 97 700 44 11',car:'h6',down:40,term:48,income:16000000,status:2,decision:'approved',own:false,created:iso(new Date(n-86400e3))},
+      {id:'A-1041',client:'Рустам Каримов',phone:'+998 90 111 22 33',car:'tiggo7',down:30,term:48,income:6800000,status:1,decision:'review',own:false,created:iso(new Date(n-2*86400e3))}
+    ],
+    contracts:[{id:'Л-2026-0317',car:'sportage',down:30,term:36,start:iso(new Date(n.getFullYear(),n.getMonth()-8,15)),paid:8}]
+  };
+}
+
+/* ---------- состояние ---------- */
+const saved=load()||seed();
+const S={role:null,phone:'',calc:{car:'sportage',down:30,term:36,brand:'Все'},apps:saved.apps,contracts:saved.contracts,services:saved.services||[],seq:saved.seq,
+  ui:{tab:'home',step:1,newApp:false,all:false,cidx:0,svc:null},
+  form:{name:'',pin:'',phone:'',income:'',job:JOBS[0],docs:{passport:'',license:'',income:''},agree:false}};
+let toastT=null;
+S.sform={ci:0,date:'',comment:'',drive:'Да'};
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200);}
+
+/* ---------- графика ---------- */
+function carSvg(color,w){
+  return `<svg viewBox="0 0 120 52" width="${w||96}" aria-hidden="true"><path d="M6 38c0-5 2-8 7-9l9-2 14-13c2-2 4-3 7-3h30c4 0 7 1 9 4l9 11 11 3c4 1 6 4 6 8v3c0 1-1 2-2 2H8c-1 0-2-1-2-2z" fill="${color}"/><path d="M38 25l7-9h14v9zM63 16h10c2 0 3 1 4 2l6 7H63z" fill="rgba(255,255,255,.78)"/><circle cx="34" cy="42" r="8" fill="#101B2D"/><circle cx="34" cy="42" r="3" fill="#C9D2DE"/><circle cx="90" cy="42" r="8" fill="#101B2D"/><circle cx="90" cy="42" r="3" fill="#C9D2DE"/></svg>`;
+}
+const ICON={
+  home:'<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',
+  calc:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M8 16h2M12 16h2"/>',
+  apply:'<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 13h5M9.5 17h5"/>',
+  pay:'<path d="M4 8h15a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M4 8l11-4v4M16 14h2"/>',
+  list:'<path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/>',
+  tool:'<path d="M14.7 6.3a4 4 0 0 0-5 5L4 17l3 3 5.7-5.7a4 4 0 0 0 5-5l-2.5 2.5-2.2-2.2z"/>',
+  warn:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/>'
+};
+const ico=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${ICON[k]}</svg>`;
+const CHECK='<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>';
+
+/* ---------- экраны ---------- */
+function header(){
+  return `<header class="top"><div class="brand"><span class="logo">${carSvg('#101B2D',22)}</span><span class="disp">Fincom Авто Лизинг</span></div>
+  <div style="text-align:right"><div class="hint">${S.role==='manager'?'Менеджер':esc(S.phone)}</div><button class="link" data-a="logout">Выйти</button></div></header>`;
+}
+function viewLogin(){
+  return `<main class="wrap">
+  <div class="brand"><span class="logo">${carSvg('#101B2D',22)}</span><span class="disp">Fincom Авто Лизинг</span></div>
+  <h1 class="hero">Автомобиль в лизинг: от заявки до ключей</h1>
+  <p class="lead">Рассчитайте платёж, подайте заявку онлайн и следите за статусом в личном кабинете.</p>
+  <div class="road-demo" aria-hidden="true"><div class="drive">${carSvg('#2B59C3',100)}</div></div>
+  <div class="panel">
+    <div class="field"><label for="ph">Номер телефона</label><input id="ph" inputmode="tel" autocomplete="tel" value="+998 90 123 45 67"></div>
+    <div class="field"><label for="code">Код из SMS</label><input id="code" inputmode="numeric" value="1234"></div>
+    <div class="stack">
+      <button class="btn primary" data-a="login-client">Войти в кабинет</button>
+      <button class="btn ghost" data-a="login-manager">Войти как менеджер</button>
+    </div>
+    <p class="hint" style="margin-top:12px">Демо-режим: подойдёт любой номер и код. Данные хранятся только в вашем браузере.</p>
+  </div></main>`;
+}
+function nav(){
+  const items=S.role==='manager'
+    ?[['queue','Заявки','list'],['svcq','Сервис','tool']]
+    :[['home','Главная','home'],['calc','Расчёт','calc'],['apply','Заявка','apply'],['pay','Платежи','pay'],['svc','Сервис','tool']];
+  return `<nav class="nav" aria-label="Разделы"><div class="nav-in">${items.map(([t,l,i])=>`<button data-a="tab" data-t="${t}" ${S.ui.tab===t?'aria-current="page"':''}><span class="pill">${ico(i)}</span>${l}</button>`).join('')}</div></nav>`;
+}
+
+/* трекер статуса */
+function tracker(a){
+  const off=a.decision==='declined';
+  const items=STEPS.map((s,i)=>{
+    const cls=off&&i===a.status?'off':(i<a.status?'done':(i===a.status?'now':''));
+    const dot=i<a.status?CHECK:'';
+    return `<li class="${cls}"><span class="dot">${dot}</span><b>${s}</b>${i===a.status&&!off?`<span class="sub">${HINTS[i]}</span>`:''}</li>`;
+  }).join('');
+  return `<ol class="steps">${items}</ol>`;
+}
+function decisionNote(a){
+  if(a.decision==='declined')return `<div class="note bad"><b>Отказ по заявке</b>Ежемесячный платёж превышает допустимую долю дохода. Увеличьте аванс или срок и подайте заявку заново.</div>`;
+  if(a.decision==='review')return `<div class="note warn"><b>Нужна ручная проверка</b>Менеджер изучит заявку и свяжется с вами по телефону.</div>`;
+  if(a.decision==='approved'&&a.status<4)return `<div class="note ok"><b>Предварительно одобрено</b>Кредитный рейтинг ${a.score||'—'}. Дальше подпишем договор и подготовим автомобиль.</div>`;
+  if(a.status>=4)return `<div class="note ok"><b>Автомобиль готов к выдаче</b>Договор появился во вкладке «Платежи».</div>`;
+  return '';
+}
+
+/* сервис */
+const PLAIN=['Заявка отправлена','Подтверждение','Выполнено'];
+const PLAIN_H=['Получили обращение','Менеджер подтверждает время и место','Услуга оказана'];
+const CONS=['Заявка отправлена','Согласование','Запись к партнёру','Выполнено'];
+const CONS_H=['Получили обращение','Согласуем с лизинговой компанией, 1–2 рабочих дня','Назначили время установки','Услуга оказана'];
+const DTP=['Обращение принято','Менеджер связался','Оформление страхового случая','Ремонт завершён'];
+const DTP_H=['Получили обращение','Менеджер звонит в течение 15 минут','Оформляем документы со страховой компанией','Автомобиль готов к выдаче'];
+const SERVICES=[
+  {id:'dtp',name:'Попал в аварию',desc:'Эвакуатор, страховой случай, ремонт',urgent:true,steps:DTP,hints:DTP_H},
+  {id:'gbo',name:'Установка ГБО',desc:'Газобаллонное оборудование',consent:true,steps:CONS,hints:CONS_H},
+  {id:'tint',name:'Установка тонировки',desc:'Тонировка стёкол',consent:true,steps:CONS,hints:CONS_H},
+  {id:'to',name:'Плановое ТО',desc:'Запись на обслуживание',steps:PLAIN,hints:PLAIN_H},
+  {id:'tow',name:'Вызвать эвакуатор',desc:'Если автомобиль не едет',urgent:true,steps:PLAIN,hints:PLAIN_H},
+  {id:'ins',name:'Страховка',desc:'Продление ОСАГО и КАСКО',steps:PLAIN,hints:PLAIN_H},
+  {id:'defer',name:'Перенос платежа',desc:'Сдвинуть ближайший платёж',steps:PLAIN,hints:PLAIN_H}
+];
+const svc=id=>SERVICES.find(s=>s.id===id);
+function trackerOf(steps,hints,status,off){
+  const last=steps.length-1;
+  return `<ol class="steps">${steps.map((s,i)=>{
+    const dn=i<status||(status===last&&i===last);
+    const now=i===status&&!dn;
+    const bad=off&&i===status;
+    const cls=bad?'off':(dn?'done':(now?'now':''));
+    return `<li class="${cls}"><span class="dot">${dn&&!bad?CHECK:''}</span><b>${s}</b>${now&&!off?`<span class="sub">${hints[i]}</span>`:''}</li>`;
+  }).join('')}</ol>`;
+}
+function sosBtn(){
+  return `<button class="sos" data-a="svc-open" data-id="dtp">${ico('warn')}<div><b>Попал в аварию</b><div>Эвакуатор, страховой случай, ремонт</div></div></button>`;
+}
+function sosBlock(){
+  return `<section class="section">${sosBtn()}<div class="row" style="margin-top:10px"><button class="btn ghost" data-a="svc-open" data-id="gbo">Установка ГБО</button><button class="btn ghost" data-a="svc-open" data-id="tint">Тонировка</button></div><div style="text-align:center"><button class="link" data-a="tab" data-t="svc">Все услуги</button></div></section>`;
+}
+function svcCard(r){
+  const s=svc(r.type),k=car(r.car);
+  return `<div class="panel" style="margin-bottom:10px"><div class="cr" style="margin-bottom:12px">${carSvg(k.color,56)}<div><div class="nm">${s.name}</div><div class="hint">${k.name}, обращение ${r.id}</div></div></div>${r.declined?'<div class="note bad"><b>Обращение отклонено</b>Менеджер свяжется с вами и объяснит причину.</div>':''}${trackerOf(s.steps,s.hints,r.status,r.declined)}</div>`;
+}
+function viewSvc(){
+  if(S.ui.svc)return viewSvcForm();
+  const mine=S.services.filter(s=>s.own);
+  if(!S.contracts.length)return `<div class="wrap">${header()}<h2>Сервис и услуги</h2><div class="panel" style="margin-top:14px"><p class="muted" style="margin-bottom:14px">Услуги доступны после оформления договора лизинга.</p><button class="btn accent" data-a="tab" data-t="calc">Рассчитать лизинг</button></div></div>`;
+  return `<div class="wrap">${header()}<h2>Сервис и услуги</h2><p class="muted" style="margin-top:4px">Выберите, что нужно сделать с автомобилем.</p>
+  <section class="section">${sosBtn()}<div class="svc-grid">${SERVICES.filter(s=>s.id!=='dtp').map(s=>`<button class="svcbtn" data-a="svc-open" data-id="${s.id}"><b>${s.name}</b><span>${s.desc}</span></button>`).join('')}</div></section>
+  ${mine.length?`<section class="section"><h3>Мои обращения</h3>${mine.map(svcCard).join('')}</section>`:''}</div>`;
+}
+function viewSvcForm(){
+  const s=svc(S.ui.svc),f=S.sform,cs=S.contracts,c=cs[+f.ci]||cs[0],k=car(c.car);
+  const carBox=cs.length>1
+    ?`<div class="field"><label for="sf-car">Автомобиль</label><select id="sf-car" data-sf="ci">${cs.map((x,i)=>`<option value="${i}" ${i==f.ci?'selected':''}>${car(x.car).name}, ${esc(x.id)}</option>`).join('')}</select></div>`
+    :`<div class="cr" style="margin-bottom:14px">${carSvg(k.color,72)}<div><div class="nm">${k.name}</div><div class="hint">Договор ${esc(c.id)}</div></div></div>`;
+  const today=new Date().toISOString().slice(0,10);
+  let extra='';
+  if(s.id==='dtp')extra=`<div class="note bad"><b>Есть пострадавшие?</b>Сначала вызовите скорую помощь (103) и ГАИ (102), затем отправьте обращение.</div><div class="field"><label for="sf-drive">Автомобиль на ходу?</label><select id="sf-drive" data-sf="drive"><option ${f.drive==='Да'?'selected':''}>Да</option><option ${f.drive==='Нет'?'selected':''}>Нет</option></select></div>`;
+  else if(s.consent)extra=`<div class="note warn"><b>Нужно согласие лизинговой компании</b>Изменения в автомобиле согласуем за 1–2 рабочих дня, до этого работы не начинайте.</div>`;
+  const date=s.urgent?'':`<div class="field"><label for="sf-date">Желаемая дата</label><input id="sf-date" type="date" data-sf="date" min="${today}" value="${esc(f.date)}"></div>`;
+  return `<div class="wrap">${header()}<h2>${s.name}</h2><p class="muted" style="margin:4px 0 14px">${s.desc}</p>
+  <div class="panel">${carBox}${extra}${date}<div class="field"><label for="sf-c">${s.id==='dtp'?'Что случилось и где находится автомобиль':'Комментарий'}</label><textarea id="sf-c" rows="3" data-sf="comment">${esc(f.comment)}</textarea></div>
+  <div class="row"><button class="btn ghost" data-a="svc-close">Назад</button><button class="btn ${s.urgent?'accent':'primary'}" data-a="svc-submit">Отправить</button></div></div></div>`;
+}
+function viewSvcQueue(){
+  const rows=S.services.map(r=>{
+    const s=svc(r.type),k=car(r.car),last=s.steps.length-1,can=!r.declined&&r.status<last;
+    return `<div class="app"><div class="hd"><div><b>${s.name}</b> ${s.urgent?'<span class="chip bad">Срочно</span>':''}<div class="hint">${esc(r.client)}, ${r.id}</div></div><span class="chip ${r.declined?'bad':(r.status===last?'ok':'')}">${r.declined?'Отклонено':s.steps[r.status]}</span></div>
+    <div class="meta">${k.name}${r.date?`, желаемая дата ${fdate(new Date(r.date+'T12:00:00'))}`:''}${r.drive==='Нет'?'<br>Автомобиль не на ходу':''}${r.comment?`<br>${esc(r.comment)}`:''}</div>
+    <div class="acts">${can?`<button class="btn sm primary" data-a="svc-adv" data-id="${r.id}">Следующий этап</button><button class="btn sm ghost" data-a="svc-dec" data-id="${r.id}">Отклонить</button>`:`<span class="hint">${r.declined?'Обращение закрыто':'Выполнено'}</span>`}</div></div>`;
+  }).join('');
+  return `<div class="wrap">${header()}<h2>Обращения по сервису</h2><p class="hint" style="margin:6px 0 12px">Демо: изменения статуса сразу видны в кабинете клиента.</p>${rows||'<p class="muted">Пока нет обращений.</p>'}</div>`;
+}
+
+function viewHome(){
+  const myApps=S.apps.filter(a=>a.own);
+  const last=myApps[0];
+  const cs=S.contracts.map((c,i)=>contractCard(c,i)).join('');
+  return `<div class="wrap">${header()}
+  <h2>Здравствуйте!</h2><p class="muted" style="margin-top:4px">Всё по вашему лизингу в одном месте.</p>
+  ${cs?`<section class="section"><h3>Мой договор</h3>${cs}</section>`:''}
+  ${last?`<section class="section"><h3>Моя заявка</h3><div class="panel"><div class="cr" style="margin-bottom:12px">${carSvg(car(last.car).color,64)}<div><div class="nm">${car(last.car).name}</div><div class="hint">Заявка ${last.id}</div></div></div>${decisionNote(last)}<button class="btn ghost" data-a="tab" data-t="apply">Открыть статус</button></div></section>`:''}
+  ${S.contracts.length?sosBlock():''}<section class="section"><div class="panel"><h3>Новый автомобиль</h3><p class="muted" style="margin:6px 0 14px">Рассчитайте платёж и подайте заявку за пять минут.</p><div class="row"><button class="btn accent" data-a="tab" data-t="calc">Рассчитать</button><button class="btn ghost" data-a="go-apply">Подать заявку</button></div></div></section>
+  </div>`;
+}
+function dueDate(c,i){const s=new Date(c.start);return new Date(s.getFullYear(),s.getMonth()+i+1,15);}
+function contractCard(c,idx){
+  const k=car(c.car),r=calc(k.price,c.down,c.term),done=c.paid>=c.term;
+  const p=Math.min(100,c.paid/c.term*100);
+  return `<div class="panel" style="margin-bottom:10px">
+    <div class="cr">${carSvg(k.color,72)}<div><div class="nm">${k.name}</div><div class="hint">Договор ${esc(c.id)}</div></div></div>
+    <hr class="sep">
+    ${done?`<div class="big">Договор закрыт</div>`:`<div class="hint">Ближайший платёж до ${fdate(dueDate(c,c.paid),true)}</div><div class="big" style="margin-top:4px">${money(r.pmt)}</div>`}
+    <div class="prog" aria-hidden="true"><div class="fill" style="width:${p}%"></div><div class="mk" style="left:${Math.max(6,Math.min(94,p))}%">${carSvg(k.color,38)}</div></div>
+    <div class="hint">Оплачено ${c.paid} из ${c.term} платежей</div>
+    ${done?'':`<div style="margin-top:14px"><button class="btn primary" data-a="pay" data-i="${idx}">Оплатить ${money(r.pmt)}</button></div>`}
+  </div>`;
+}
+
+function viewCalc(){
+  const c=S.calc;
+  return `<div class="wrap">${header()}
+  <h2>Расчёт лизинга</h2>
+  <section class="section" style="margin-top:14px"><div class="brands" role="group" aria-label="Марка">${BRANDS.map(b=>`<button data-a="brand" data-b="${b}" aria-pressed="${b===c.brand}">${b}</button>`).join('')}</div><div class="cars" role="group" aria-label="Автомобиль">${CARS.filter(k=>c.brand==='Все'||k.brand===c.brand).map(k=>`<button class="carbtn" data-a="pick-car" data-id="${k.id}" aria-pressed="${k.id===c.car}">${carSvg(k.color,110)}<b>${k.name}</b><span>${money(k.price)}</span></button>`).join('')}</div>
+  <p class="hint">Цены и ставки демонстрационные.</p></section>
+  <section class="section"><div class="panel">
+    <div class="slider"><div class="lab"><label for="rd">Первоначальный взнос</label><b id="vd"></b></div><input id="rd" type="range" min="10" max="70" step="5" value="${c.down}" data-calc="down"></div>
+    <div class="slider"><div class="lab"><label for="rt">Срок лизинга</label><b id="vt"></b></div><input id="rt" type="range" min="12" max="60" step="6" value="${c.term}" data-calc="term"></div>
+    <hr class="sep">
+    <div id="calcOut"></div>
+  </div></section>
+  <section class="section stack"><button class="btn accent" data-a="go-apply">Подать заявку с этими условиями</button><button class="btn ghost" data-a="toggle-all">${S.ui.all?'Скрыть график платежей':'Показать график платежей'}</button></section>
+  <div id="sched"></div>
+  </div>`;
+}
+function calcOut(){
+  const c=S.calc,k=car(c.car),r=calc(k.price,c.down,c.term);
+  const v=(id,t)=>{const e=document.getElementById(id);if(e)e.textContent=t};
+  v('vd',`${c.down}% (${money(r.down)})`);v('vt',`${c.term} мес.`);
+  const o=document.getElementById('calcOut');
+  if(o)o.innerHTML=`<div class="hint">Платёж в месяц</div><div class="big">${money(r.pmt)}</div>
+  <dl class="kv"><div><dt>Сумма лизинга</dt><dd>${money(r.P)}</dd></div><div><dt>Ставка</dt><dd>${pct1(r.rate)}% годовых</dd></div><div><dt>Переплата</dt><dd>${money(r.over)}</dd></div></dl>`;
+  const s=document.getElementById('sched');
+  if(s)s.innerHTML=S.ui.all?`<section class="section"><div class="panel"><h3 style="margin-bottom:8px">График платежей</h3><div class="tbl-wrap"><table><thead><tr><th>№</th><th class="r">Платёж</th><th class="r">Проценты</th><th class="r">Остаток</th></tr></thead><tbody>${r.rows.map(x=>`<tr><td>${x.i}</td><td class="r">${money(x.pmt)}</td><td class="r">${money(x.int)}</td><td class="r">${money(x.bal)}</td></tr>`).join('')}</tbody></table></div></div></section>`:'';
+}
+
+function viewApply(){
+  const mine=S.apps.filter(a=>a.own);
+  if(mine.length&&!S.ui.newApp){
+    const a=mine[0],k=car(a.car);
+    return `<div class="wrap">${header()}<h2>Статус заявки</h2>
+    <section class="section" style="margin-top:14px"><div class="panel">
+      <div class="cr" style="margin-bottom:12px">${carSvg(k.color,72)}<div><div class="nm">${k.name}</div><div class="hint">Заявка ${a.id}, ${a.term} мес., ${money(monthly(a))} в месяц</div></div></div>
+      ${decisionNote(a)}${tracker(a)}</div></section>
+    <section class="section"><button class="btn ghost" data-a="new-app">Новая заявка</button></section></div>`;
+  }
+  const st=S.ui.step,f=S.form,k=car(S.calc.car),r=calc(k.price,S.calc.down,S.calc.term);
+  let body='';
+  if(st===1){
+    body=`<div class="cr" style="margin-bottom:12px">${carSvg(k.color,80)}<div><div class="nm">${k.name}</div><div class="hint">${k.trim}</div></div></div>
+    <dl class="kv" style="margin-top:0"><div><dt>Стоимость</dt><dd>${money(k.price)}</dd></div><div><dt>Аванс</dt><dd>${S.calc.down}%</dd></div><div><dt>Срок</dt><dd>${S.calc.term} мес.</dd></div></dl>
+    <hr class="sep"><div class="hint">Платёж в месяц</div><div class="big">${money(r.pmt)}</div>
+    <div style="margin-top:16px" class="stack"><button class="btn primary" data-a="step-next">Продолжить</button><button class="btn ghost" data-a="tab" data-t="calc">Изменить условия</button></div>`;
+  }else if(st===2){
+    body=`<div class="field"><label for="f-name">ФИО</label><input id="f-name" data-f="name" autocomplete="name" value="${esc(f.name)}" placeholder="Иванов Иван Иванович"></div>
+    <div class="field"><label for="f-pin">ПИНФЛ (14 цифр)</label><input id="f-pin" data-f="pin" inputmode="numeric" maxlength="14" value="${esc(f.pin)}" placeholder="12345678901234"></div>
+    <div class="field"><label for="f-phone">Телефон</label><input id="f-phone" data-f="phone" inputmode="tel" value="${esc(f.phone)}"></div>
+    <div class="field"><label for="f-job">Занятость</label><select id="f-job" data-f="job">${JOBS.map(j=>`<option ${j===f.job?'selected':''}>${j}</option>`).join('')}</select></div>
+    <div class="field"><label for="f-inc">Ежемесячный доход, сум</label><input id="f-inc" data-f="income" inputmode="numeric" value="${esc(f.income)}" placeholder="8000000"></div>
+    <div class="row"><button class="btn ghost" data-a="step-back">Назад</button><button class="btn primary" data-a="step-next">Продолжить</button></div>`;
+  }else{
+    const doc=(key,t)=>`<label class="file ${f.docs[key]?'has':''}"><div><div class="t">${t}</div><div class="s">${f.docs[key]?esc(f.docs[key]):'Фото или PDF'}</div></div><span class="chip ${f.docs[key]?'ok':''}">${f.docs[key]?'Прикреплён':'Выбрать'}</span><input type="file" accept="image/*,.pdf" data-doc="${key}" aria-label="${t}"></label>`;
+    body=`${doc('passport','Паспорт')}${doc('license','Водительское удостоверение')}${doc('income','Справка о доходах')}
+    <label class="check"><input type="checkbox" data-f="agree" ${f.agree?'checked':''}><span>Согласен на обработку персональных данных и запрос кредитной истории</span></label>
+    <div class="row"><button class="btn ghost" data-a="step-back">Назад</button><button class="btn accent" data-a="submit">Отправить заявку</button></div>`;
+  }
+  const titles=['Условия','Ваши данные','Документы'];
+  return `<div class="wrap">${header()}<h2>Заявка на лизинг</h2><p class="muted" style="margin-top:4px">Шаг ${st} из 3: ${titles[st-1]}</p>
+  <div class="prog" aria-hidden="true" style="height:14px;margin:10px 0"><div class="fill" style="top:4px;height:6px;width:${st/3*100}%;background:var(--accent)"></div></div>
+  <div class="panel">${body}</div></div>`;
+}
+
+function viewPay(){
+  if(!S.contracts.length)return `<div class="wrap">${header()}<h2>Платежи</h2><div class="panel" style="margin-top:14px"><p class="muted" style="margin-bottom:14px">Здесь появится график платежей, когда оформим договор. Начните с расчёта.</p><button class="btn accent" data-a="tab" data-t="calc">Рассчитать лизинг</button></div></div>`;
+  const i=Math.min(S.ui.cidx,S.contracts.length-1),c=S.contracts[i],k=car(c.car),r=calc(k.price,c.down,c.term);
+  const rows=r.rows.map((x,j)=>({...x,date:dueDate(c,j),paid:j<c.paid}));
+  const firstNext=rows.findIndex(x=>!x.paid);
+  const shown=S.ui.all?rows:rows.slice(Math.max(0,firstNext<0?rows.length-6:firstNext-1),(firstNext<0?rows.length:firstNext)+6);
+  const picker=S.contracts.length>1?`<div class="row" style="margin:12px 0">${S.contracts.map((x,j)=>`<button class="btn sm ${j===i?'primary':'ghost'}" data-a="pick-contract" data-i="${j}">${esc(x.id)}</button>`).join('')}</div>`:'';
+  return `<div class="wrap">${header()}<h2>Платежи</h2>${picker}
+  <section class="section" style="margin-top:14px">${contractCard(c,i)}</section>
+  <section class="section"><div class="panel"><h3 style="margin-bottom:8px">График платежей</h3><div class="tbl-wrap"><table><thead><tr><th>№</th><th>Дата</th><th class="r">Платёж</th><th>Статус</th></tr></thead><tbody>${shown.map(x=>`<tr class="${x.i-1===firstNext?'next':''}"><td>${x.i}</td><td>${fdate(x.date)}</td><td class="r">${money(x.pmt)}</td><td>${x.paid?'<span class="chip ok">Оплачен</span>':(x.i-1===firstNext?'<span class="chip warn">Ближайший</span>':'<span class="chip">Ожидается</span>')}</td></tr>`).join('')}</tbody></table></div>
+  <div style="margin-top:12px"><button class="btn ghost" data-a="toggle-all">${S.ui.all?'Показать только ближайшие':'Показать весь график'}</button></div></div></section></div>`;
+}
+
+function viewQueue(){
+  const A=S.apps;
+  const n=(f)=>A.filter(f).length;
+  const chip=a=>({approved:['ok','Одобрено'],review:['warn','Ручная проверка'],declined:['bad','Отказ'],pending:['','Скоринг']}[a.decision]);
+  const rows=A.map(a=>{
+    const k=car(a.car),m=monthly(a),rt=m/a.income,ch=chip(a);
+    const can=a.decision!=='declined'&&a.status<4;
+    return `<div class="app"><div class="hd"><div><b>${esc(a.client)}</b> ${a.own?'<span class="own-tag">(клиент этого кабинета)</span>':''}<div class="hint">${a.id}, ${esc(a.phone)}</div></div><span class="chip ${ch[0]}">${ch[1]}</span></div>
+    <div class="meta">${k.name}, ${a.term} мес., аванс ${a.down}%<br>Платёж ${money(m)}, доход ${money(a.income)}, нагрузка ${Math.round(rt*100)}%</div>
+    <div style="margin-bottom:10px"><span class="chip">${STEPS[a.status]}</span></div>
+    <div class="acts">${can?`<button class="btn sm primary" data-a="advance" data-id="${a.id}">Следующий этап</button><button class="btn sm ghost" data-a="decline" data-id="${a.id}">Отказать</button>`:`<span class="hint">${a.decision==='declined'?'Заявка закрыта':'Договор оформлен'}</span>`}</div></div>`;
+  }).join('');
+  return `<div class="wrap">${header()}<h2>Очередь заявок</h2>
+  <div class="stat" style="margin-top:14px"><div><b>${n(a=>a.status<2&&a.decision!=='declined')}</b><span>на проверке</span></div><div><b>${n(a=>a.decision==='approved'&&a.status<4)}</b><span>одобрено</span></div><div><b>${n(a=>a.status===4)}</b><span>выдано</span></div></div>
+  <p class="hint" style="margin-bottom:12px">Демо: изменения статуса сразу видны в кабинете клиента.</p>${rows}</div>`;
+}
+
+/* ---------- отрисовка ---------- */
+function render(){
+  const app=document.getElementById('app');
+  if(!S.role){app.innerHTML=viewLogin();return;}
+  const v={home:viewHome,calc:viewCalc,apply:viewApply,pay:viewPay,queue:viewQueue,svc:viewSvc,svcq:viewSvcQueue}[S.ui.tab]||viewHome;
+  app.innerHTML=v()+nav();
+  if(S.ui.tab==='calc')calcOut();
+}
+
+/* ---------- скоринг ---------- */
+function runScoring(id){
+  setTimeout(()=>{
+    const a=S.apps.find(x=>x.id===id);if(!a||a.decision!=='pending')return;
+    a.status=1;save();render();
+    setTimeout(()=>{
+      const b=S.apps.find(x=>x.id===id);if(!b||b.decision!=='pending')return;
+      const r=ratio(b);
+      b.score=Math.max(400,Math.min(850,Math.round(850-r*400)));
+      if(r<=0.5){b.decision='approved';b.status=2;}
+      else if(r<=0.7){b.decision='review';}
+      else{b.decision='declined';}
+      save();render();
+      toast(b.decision==='approved'?'Заявка предварительно одобрена':b.decision==='review'?'Заявка передана на ручную проверку':'По заявке принят отказ');
+    },2600);
+  },1200);
+}
+function advance(id){
+  const a=S.apps.find(x=>x.id===id);if(!a||a.status>=4)return;
+  a.status=Math.min(4,a.status+1);
+  if(a.status>=2)a.decision='approved';
+  if(a.status===4&&a.own&&!a.contractId){
+    a.contractId='Л-'+new Date().getFullYear()+'-'+a.id.slice(2);
+    S.contracts.push({id:a.contractId,car:a.car,down:a.down,term:a.term,start:new Date().toISOString(),paid:0});
+  }
+  save();render();
+}
+
+/* ---------- действия ---------- */
+function go(tab){S.ui.tab=tab;S.ui.all=false;render();window.scrollTo(0,0);}
+function act(a,d){
+  switch(a){
+    case 'login-client':{const p=(document.getElementById('ph').value||'').trim();S.role='client';S.phone=p||'+998 90 123 45 67';S.form.phone=S.phone;S.ui.newApp=false;go('home');break;}
+    case 'login-manager':S.role='manager';S.ui.tab='queue';render();window.scrollTo(0,0);break;
+    case 'logout':S.role=null;render();window.scrollTo(0,0);break;
+    case 'tab':S.ui.svc=null;go(d.t);break;
+    case 'brand':S.calc.brand=d.b;render();break;
+    case 'pick-car':S.calc.car=d.id;render();break;
+    case 'toggle-all':S.ui.all=!S.ui.all;if(S.ui.tab==='calc'){render();}else{const y=window.scrollY;render();window.scrollTo(0,y);}break;
+    case 'go-apply':S.ui.newApp=true;S.ui.step=1;go('apply');break;
+    case 'new-app':S.ui.newApp=true;S.ui.step=1;render();window.scrollTo(0,0);break;
+    case 'step-back':S.ui.step=Math.max(1,S.ui.step-1);render();window.scrollTo(0,0);break;
+    case 'step-next':{
+      const f=S.form;
+      if(S.ui.step===2){
+        if(f.name.trim().length<5)return toast('Введите ФИО полностью');
+        if(!/^\d{14}$/.test(f.pin))return toast('ПИНФЛ состоит из 14 цифр');
+        if(!(parseInt(f.income,10)>0))return toast('Укажите ежемесячный доход');
+      }
+      S.ui.step=Math.min(3,S.ui.step+1);render();window.scrollTo(0,0);break;}
+    case 'submit':{
+      const f=S.form;
+      if(!f.docs.passport||!f.docs.license||!f.docs.income)return toast('Прикрепите все три документа');
+      if(!f.agree)return toast('Подтвердите согласие на обработку данных');
+      const id='A-'+(++S.seq);
+      S.apps.unshift({id,client:f.name.trim(),phone:f.phone,car:S.calc.car,down:S.calc.down,term:S.calc.term,income:parseInt(f.income,10),status:0,decision:'pending',own:true,created:new Date().toISOString()});
+      f.docs={passport:'',license:'',income:''};f.agree=false;
+      S.ui.newApp=false;S.ui.step=1;save();render();window.scrollTo(0,0);
+      toast('Заявка отправлена');runScoring(id);break;}
+    case 'pay':{const c=S.contracts[+d.i];if(c&&c.paid<c.term){c.paid++;save();const y=window.scrollY;render();window.scrollTo(0,y);toast(c.paid>=c.term?'Последний платёж принят. Договор закрыт':'Платёж принят. Спасибо!');}break;}
+    case 'pick-contract':S.ui.cidx=+d.i;render();break;
+    case 'svc-open':S.ui.svc=d.id;S.sform={ci:0,date:'',comment:'',drive:'Да'};S.ui.tab='svc';render();window.scrollTo(0,0);break;
+    case 'svc-close':S.ui.svc=null;render();window.scrollTo(0,0);break;
+    case 'svc-submit':{
+      const s=svc(S.ui.svc),f=S.sform,c=S.contracts[+f.ci]||S.contracts[0];if(!c)return;
+      if(!s.urgent&&!f.date)return toast('Выберите желаемую дату');
+      if(s.id==='dtp'&&!f.comment.trim())return toast('Опишите, что случилось');
+      const id='S-'+Date.now().toString().slice(-5);
+      S.services.unshift({id,type:s.id,car:c.car,contractId:c.id,date:s.urgent?'':f.date,comment:f.comment.trim(),drive:f.drive,client:S.phone,phone:S.phone,status:0,declined:false,own:true,created:new Date().toISOString()});
+      S.ui.svc=null;save();render();window.scrollTo(0,0);
+      toast(s.id==='dtp'?'Обращение принято. Менеджер позвонит в течение 15 минут':'Обращение отправлено');break;}
+    case 'svc-adv':{const r=S.services.find(x=>x.id===d.id);if(r){const s=svc(r.type);r.status=Math.min(s.steps.length-1,r.status+1);save();render();}break;}
+    case 'svc-dec':{const r=S.services.find(x=>x.id===d.id);if(r){r.declined=true;save();render();}break;}
+    case 'advance':advance(d.id);break;
+    case 'decline':{const a=S.apps.find(x=>x.id===d.id);if(a){a.decision='declined';save();render();}break;}
+  }
+}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(t)act(t.dataset.a,t.dataset);});
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.calc){S.calc[t.dataset.calc]=+t.value;calcOut();return;}
+  if(t.dataset.sf){S.sform[t.dataset.sf]=t.value;return;}
+  const k=t.dataset.f;if(!k)return;
+  if(k==='pin'||k==='income'){t.value=t.value.replace(/\D/g,'');}
+  S.form[k]=t.type==='checkbox'?t.checked:t.value;
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset.doc){S.form.docs[t.dataset.doc]=t.files&&t.files[0]?t.files[0].name:'';render();}
+});
+
+S.apps.filter(a=>a.own&&a.decision==='pending').forEach(a=>runScoring(a.id));
+render();
+</script>
+</body>
+</html>
